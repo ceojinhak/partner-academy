@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mario
+  namespace: mario
+  labels:
+    app: mario
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mario
+  template:
+    metadata:
+      labels:
+        app: mario
+    spec:
+      volumes:
+      - name: mario-pv
+        persistentVolumeClaim:
+          claimName: pa-pvc
+      containers:
+      - name: mario
+        image: pengbai/docker-supermario
+        volumeMounts:
+          - mountPath: "/mnt"
+            name: mario-pv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mario
+  namespace: mario
+spec:
+  selector:
+    app: mario
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  type: NodePort
+  externalTrafficPolicy: Local
