@@ -18,7 +18,7 @@ spec:
       volumes:
       - name: mario-pv
         persistentVolumeClaim:
-          claimName: pa-pvc
+          claimName: mario-pvc
       containers:
       - name: mario
         image: pengbai/docker-supermario
